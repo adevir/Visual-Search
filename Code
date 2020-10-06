@@ -31,10 +31,18 @@
                    "<div class='float: right;'><img style = 'border: 1px solid black; padding: 30px 0px' src='Ntrials/trial8.jpg' width = '300'></img>" +
                    "<p class='small'><strong>Press 2</strong></p></div>" +
                    "</div>"+
-                   "<p><br>Press any key to begin.</p>"
+                   "<p><br>Press any key to continue.</p>"
            }
            timeline.push(instructions);
               
+           var ready= {
+               type:"html-keyboard-response",
+               stimulus:
+                  "<p>Ready?</p>" +
+                  "<p><br>Press any key to begin.</p>"
+           }
+           timeline.push(ready);
+           
            var test_all_trials = [
                {stimulus: "Ntrials/trial1.JPG", data: {test_part: 'test', correct_response: '1'}},
                {stimulus: "Ntrials/trial2.JPG", data: {test_part: 'test', correct_response: '1'}},
