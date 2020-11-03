@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>My experiment</title>
+        <script src="jspsych/jspsych.js"></script>
+        <script src="jspsych/plugins/jspsych-html-keyboard-response.js"></script>
+        <script src="jspsych/plugins/jspsych-visual-search-circle.js"></script>
+        <script src="jspsych/plugins/jspsych-visual-search.js"></script>
+        <link href="jspsych/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+    </head>
+    <body></body>
+    <script>
+
+    var timeline = []
+
+    var welcome = {
+        type: "html-keyboard-response",
+        stimulus: "Welcome. In this experiment you will be looking for a unique object in a series of images. <br>Press any key to begin",
+        post_trial_gap: 500
+    }
+
+
+    var no_prompt_instructions = {
+        type: "html-keyboard-response",
+        stimulus:
+        "<p>In every trial you will see a group of circles.</p>"+
+        "<p>In some trials, all of the circles will be the same color, but in others, one circle will be a different color.</p>"+
+        "<p><strong>Press 1 if there is a circle with a different color.</p>"+
+        "<p>Press 2 if they are all the same color.</strong></p>"+
+        "<p>Answer as quickly and as accurately as you can!</p>"+
+        "<p><br>Press any key to continue.</p>"
+    }
+
+    var prompt_instructions = {
+        type: "html-keyboard-response",
+        stimulus:
+        "<p>In every trial you will see a group of circles.</p>"+
+        "<p>Before each trial, you will briefly be shown a colored circle to look for.</p>"+
+        "<p><strong>Press 1 if that circle is present.</p>"+
+        "<p>Press 2 if it is not.</strong></p>"+
+        "<p>Answer as quickly and as accurately as you can!</p>"+
+        "<p><br>Press any key to continue.</p>"
+    }
+
+    var change_instructions = {
+        type: "html-keyboard-response",
+        stimulus: 
+        "<p>For the second half of the experiment, you will be doing a similar task, but the instructions will be slightly different</p>" +
+        "<p><br>Press any key to continue.</p>"
+    }
+
+    var ready= {
+        type:"html-keyboard-response",
+        stimulus:
+        "<p>Ready?</p>" +
+        "<p><br>Press any key to begin.</p>"
+    }
+
+
+    var no_prompt_trial = {
+        timeline : [
+        {
+        type: 'visual-search',
+        target: jsPsych.timelineVariable('target'),
+        foil: jsPsych.timelineVariable('foil'),
+        fixation_image: 'jspsych/examples/img/fixation_cross.jpg',
+        target_present: jsPsych.timelineVariable('target_present'),
+        circle_diameter: 500,
+        set_size: 20,
+        num_stimuli: jsPsych.timelineVariable('num_stimuli'),
+        target_present_key: 49,
+        target_absent_key: 50,
+        }
+
+        ],
+        timeline_variables: [
+            {target: 'jspsych/examples/img/yellowcircle.jpg', foil: 'jspsych/examples/img/bluecircle.jpg', target_present: true, num_stimuli: 3},
+            {target: 'jspsych/examples/img/redcircle.jpg', foil: 'jspsych/examples/img/greencircle.jpg', target_present: false, num_stimuli: 3},
+            {target: 'jspsych/examples/img/bluecircle.jpg', foil: 'jspsych/examples/img/purplecircle.jpg', target_present: true, num_stimuli: 6},
+            {target: 'jspsych/examples/img/greencircle.jpg', foil: 'jspsych/examples/img/yellowcircle.jpg', target_present: false, num_stimuli: 6},
+            {target: 'jspsych/examples/img/purplecircle.jpg', foil: 'jspsych/examples/img/redcircle.jpg', target_present: true, num_stimuli: 9},
+            {target: 'jspsych/examples/img/greencircle.jpg', foil: 'jspsych/examples/img/redcircle.jpg', target_present: false, num_stimuli: 9}
+
+        ],
+        randomize_order: true,
+ 
+    }
+    var prompt_trial = {
+        timeline : [
+        {
+        type: 'html-keyboard-response',
+        stimulus: function(){
+                var html = "<p>Look for: </p>"
+                html+="<img src='"+jsPsych.timelineVariable('target', true)+"' width = '50'>";
+                html+="<br><br><br><p> <strong>Reminder</strong><br>1: Color is present</br>2: Color is NOT present</p>"
+                return html;
+            },   
+        trial_duration: 1000
+        },
+        {
+        type: 'visual-search',
+        target: jsPsych.timelineVariable('target'),
+        foil: jsPsych.timelineVariable('foil'),
+        fixation_image: 'jspsych/examples/img/fixation_cross.jpg',
+        target_present: jsPsych.timelineVariable('target_present'),
+        circle_diameter: 500,
+        set_size: 20,
+        num_stimuli: jsPsych.timelineVariable('num_stimuli'),
+        target_present_key: 49,
+        target_absent_key: 50,
+        }
+
+        ],
+        timeline_variables: [
+            {target: 'jspsych/examples/img/yellowcircle.jpg', foil: 'jspsych/examples/img/bluecircle.jpg', target_present: true, num_stimuli: 3},
+            {target: 'jspsych/examples/img/redcircle.jpg', foil: 'jspsych/examples/img/greencircle.jpg', target_present: false, num_stimuli: 3},
+            {target: 'jspsych/examples/img/bluecircle.jpg', foil: 'jspsych/examples/img/purplecircle.jpg', target_present: true, num_stimuli: 6},
+            {target: 'jspsych/examples/img/greencircle.jpg', foil: 'jspsych/examples/img/yellowcircle.jpg', target_present: false, num_stimuli: 6},
+            {target: 'jspsych/examples/img/purplecircle.jpg', foil: 'jspsych/examples/img/redcircle.jpg', target_present: true, num_stimuli: 9},
+            {target: 'jspsych/examples/img/greencircle.jpg', foil: 'jspsych/examples/img/redcircle.jpg', target_present: false, num_stimuli: 9}
+
+        ],
+        randomize_order: true,
+ 
+    }
+
+
+    var coin_flip = Math.random();
+    if (coin_flip <= .5) {
+        timeline.push(welcome);
+        timeline.push(no_prompt_instructions);
+        timeline.push(ready);
+        timeline.push(no_prompt_trial);
+        timeline.push(change_instructions);
+        timeline.push(prompt_instructions);
+        timeline.push(ready);
+        timeline.push(prompt_trial);
+    }
+    else {
+        timeline.push(welcome);
+        timeline.push(prompt_instructions);
+        timeline.push(ready);
+        timeline.push(prompt_trial);
+        timeline.push(change_instructions);
+        timeline.push(no_prompt_instructions);
+        timeline.push(ready);
+        timeline.push(no_prompt_trial);
+    }
+
+    jsPsych.init({
+        
+        timeline: timeline,
+        show_preload_progress_bar: false,
+        on_finish: function(){
+            jsPsych.data.get().localSave("csv", "data_exp_demo.csv");
+        }
+    })
+
+    </script>
+</html>
